@@ -24,10 +24,10 @@
 					<div class="card-header">Ajax Todo List <a data-toggle="modal" data-target="#exampleModal" href="" class="i fa fa-plus float-right"></a></div>
 					<div class="card-body">
 						<ul class="list-group">
-							<li class="list-group-item">Rashed</li>
-							<li class="list-group-item">Rana</li>
-							<li class="list-group-item">Rahim</li>
-							<li class="list-group-item">Rakib</li>
+							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rashed</li>
+							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rana</li>
+							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rahim</li>
+							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rakib</li>
 						</ul>
 					</div>
 				</div>
@@ -37,17 +37,18 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+							<h5 class="modal-title" id="title">Add New Item</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							...
+							<input type="text" class="form-control" name="" id="addItem" placeholder="Write item here">
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Save changes</button>
+							<button style="display: none;" type="button" id="delete" class="btn btn-danger">Delete</button>
+							<button style="display: none;" type="button" id="saveChanges" class="btn btn-warning">saveChanges</button>
+							<button id="addButton" type="button" class="btn btn-primary">Add</button>
 						</div>
 					</div>
 				</div>
@@ -64,5 +65,20 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script>
+		jQuery(document).ready(function($) {
+			$('.ourItem').each(function() {
+				$(this).click(function(event) {
+					var text = $(this).text();
+					$('#title').text('Edit Item');
+					$('#delete').show('400');
+					$('#saveChanges').show('400');
+					$('#addButton').hide('fast');
+					$('#addItem').val(text);
+					console.log(text);
+				});
+			});
+		});
+	</script>
 </body>
 </html>
