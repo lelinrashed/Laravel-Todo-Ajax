@@ -5,6 +5,7 @@
 	<title>Ajax Todo with Laravel</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 	<style rel="stylesheet">
 		a {
 			outline: 0;
@@ -21,7 +22,7 @@
 		<div class="row justify-content-center">
 			<div class="col-lg-6 col-md-6 col-12">
 				<div class="card">
-					<div class="card-header">Ajax Todo List <a data-toggle="modal" data-target="#exampleModal" href="" class="i fa fa-plus float-right"></a></div>
+					<div class="card-header">Ajax Todo List <a id="addNew" data-toggle="modal" data-target="#exampleModal" href="" class="i fa fa-plus float-right"></a></div>
 					<div class="card-body">
 						<ul class="list-group">
 							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rashed</li>
@@ -44,11 +45,12 @@
 						</div>
 						<div class="modal-body">
 							<input type="text" class="form-control" name="" id="addItem" placeholder="Write item here">
+							{{ csrf_field() }}
 						</div>
 						<div class="modal-footer">
 							<button style="display: none;" type="button" id="delete" class="btn btn-danger">Delete</button>
 							<button style="display: none;" type="button" id="saveChanges" class="btn btn-warning">saveChanges</button>
-							<button id="addButton" type="button" class="btn btn-primary">Add</button>
+							<button id="addButton" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
 						</div>
 					</div>
 				</div>
@@ -58,13 +60,14 @@
 		</div>
 	</div>
 
-
+	
 
 	
 	{{-- Javascript file --}}
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 	<script>
 		jQuery(document).ready(function($) {
 			$('.ourItem').each(function() {
@@ -75,10 +78,30 @@
 					$('#saveChanges').show('400');
 					$('#addButton').hide('fast');
 					$('#addItem').val(text);
-					console.log(text);
 				});
 			});
+
+			$('#addNew').click(function(event) {
+				$('#title').text('Add New Item');
+				$('#delete').hide('400');
+				$('#saveChanges').hide('400');
+				$('#addButton').show('400');
+				$('#addItem').val("");
+			});
+
+			$('#addButton').click(function(event) {
+				var text = $('#addItem').val();
+				$.post('list', {'text': text, '_token':$('input[name=_token]').val()}, function(data) {
+					console.log(data);
+				});
+			});
+
 		});
+	</script>
+	<script>
+		@if (session('status'))
+            toastr.success('{{ session('status') }}')
+        @endif
 	</script>
 </body>
 </html>

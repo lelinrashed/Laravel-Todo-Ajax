@@ -11,10 +11,9 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/product', function () {
     return view('welcome');
 });
 
-Route::get('/list', function () {
-    return view('list');
-});
+Route::get('/list', 'ListsController@index')->name('home');
+Route::post('/list', 'ListsController@create')->name('create');
