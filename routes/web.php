@@ -15,6 +15,7 @@ Route::get('/product', function () {
     return view('welcome');
 });
 
-Route::get('/list', 'ListsController@index')->name('home');
-Route::post('/list', 'ListsController@create')->name('create.list');
-Route::post('/delete', 'ListsController@delete')->name('delete.list');
+Route::get('/list', 'ListsController@index');
+Route::post('/list', 'ListsController@create');
+Route::post('/delete', 'ListsController@delete');
+Route::post('/update', 'ListsController@update');

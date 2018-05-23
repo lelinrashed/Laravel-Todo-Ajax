@@ -49,7 +49,7 @@
 						</div>
 						<div class="modal-footer">
 							<button style="display: none;" type="button" id="delete" class="btn btn-danger" data-dismiss="modal">Delete</button>
-							<button style="display: none;" type="button" id="saveChanges" class="btn btn-warning">saveChanges</button>
+							<button style="display: none;" type="button" id="saveChanges" class="btn btn-warning" data-dismiss="modal">saveChanges</button>
 							<button id="addButton" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
 						</div>
 					</div>
@@ -91,10 +91,14 @@
 
 			$('#addButton').click(function(event) {
 				var text = $('#addItem').val();
-				$.post('list', {'text': text, '_token':$('input[name=_token]').val()}, function(data) {
-					$('#items').load(location.href + ' #items');
-					console.log(data);
-				});
+				if (text == "") {
+					alert("Please type something");
+				}else{
+					$.post('list', {'text': text, '_token':$('input[name=_token]').val()}, function(data) {
+						$('#items').load(location.href + ' #items');
+						console.log(data);
+					});
+				}			
 			});
 
 			$('#delete').click(function(event) {
@@ -105,6 +109,20 @@
 					console.log(data);
 				});
 			});
+
+			$('#saveChanges').click(function(event) {
+				var id = $('#id').val();
+				var value = $('#addItem').val();
+				if (value == "") {
+					alert("Please type something.");
+				}else{					
+					$.post('update', {'id': id, 'value':value, '_token':$('input[name=_token]').val()}, function(data) {
+						$('#items').load(location.href + ' #items');
+						console.log(data);
+					});
+				};
+			});
+
 
 		});
 	</script>
