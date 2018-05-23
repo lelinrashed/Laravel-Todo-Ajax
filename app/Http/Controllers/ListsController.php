@@ -10,7 +10,7 @@ class ListsController extends Controller
     
 	public function index()
 	{
-		 return view('list');
+		return view('list')->with('items', Item::all());
 	}
 
 
@@ -20,7 +20,13 @@ class ListsController extends Controller
 		$item->item = $request->text;
 		$item->save();
 		Session::flash('status', 'Item Added Successfully');
-		return redirect()->back();
+		return 'done';
+	}
+
+	public function delete(request $request)
+	{
+		Item::where('id', $request->id)->delete();
+		return $request->all();
 	}
 
 }

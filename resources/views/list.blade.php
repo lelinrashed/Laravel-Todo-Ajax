@@ -24,11 +24,10 @@
 				<div class="card">
 					<div class="card-header">Ajax Todo List <a id="addNew" data-toggle="modal" data-target="#exampleModal" href="" class="i fa fa-plus float-right"></a></div>
 					<div class="card-body">
-						<ul class="list-group">
-							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rashed</li>
-							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rana</li>
-							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rahim</li>
-							<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">Rakib</li>
+						<ul class="list-group" id="items">
+							@foreach($items as $item)
+								<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">{{ $item->item }} <input type="hidden" value="{{ $item->id }}" id="itemId"></li>
+							@endforeach
 						</ul>
 					</div>
 				</div>
@@ -44,11 +43,12 @@
 							</button>
 						</div>
 						<div class="modal-body">
+							<input type="hidden" id="id">
 							<input type="text" class="form-control" name="" id="addItem" placeholder="Write item here">
 							{{ csrf_field() }}
 						</div>
 						<div class="modal-footer">
-							<button style="display: none;" type="button" id="delete" class="btn btn-danger">Delete</button>
+							<button style="display: none;" type="button" id="delete" class="btn btn-danger" data-dismiss="modal">Delete</button>
 							<button style="display: none;" type="button" id="saveChanges" class="btn btn-warning">saveChanges</button>
 							<button id="addButton" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
 						</div>
@@ -70,18 +70,18 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 	<script>
 		jQuery(document).ready(function($) {
-			$('.ourItem').each(function() {
-				$(this).click(function(event) {
-					var text = $(this).text();
-					$('#title').text('Edit Item');
-					$('#delete').show('400');
-					$('#saveChanges').show('400');
-					$('#addButton').hide('fast');
-					$('#addItem').val(text);
-				});
+			$(document).on('click', '.ourItem', function(event) {
+				var text = $(this).text();
+				var id = $(this).find('#itemId').val();
+				$('#title').text('Edit Item');
+				$('#delete').show('400');
+				$('#saveChanges').show('400');
+				$('#addButton').hide('fast');
+				$('#addItem').val(text);
+				$('#id').val(id);
 			});
 
-			$('#addNew').click(function(event) {
+			$(document).on('click', '#addNew', function(event) {
 				$('#title').text('Add New Item');
 				$('#delete').hide('400');
 				$('#saveChanges').hide('400');
@@ -92,6 +92,16 @@
 			$('#addButton').click(function(event) {
 				var text = $('#addItem').val();
 				$.post('list', {'text': text, '_token':$('input[name=_token]').val()}, function(data) {
+					$('#items').load(location.href + ' #items');
+					console.log(data);
+				});
+			});
+
+			$('#delete').click(function(event) {
+				var id = $('#id').val();
+				$.post('delete', {'id': id, '_token':$('input[name=_token]').val()}, function(data) {		
+									
+					$('#items').load(location.href + ' #items');
 					console.log(data);
 				});
 			});
