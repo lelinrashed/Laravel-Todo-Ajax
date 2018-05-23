@@ -19,3 +19,5 @@ Route::get('/list', 'ListsController@index');
 Route::post('/list', 'ListsController@create');
 Route::post('/delete', 'ListsController@delete');
 Route::post('/update', 'ListsController@update');
+
+Route::get('/search', 'ListsController@search');

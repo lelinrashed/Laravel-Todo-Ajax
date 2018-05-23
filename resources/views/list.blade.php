@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
 	<style rel="stylesheet">
 		a {
 			outline: 0;
@@ -24,6 +25,8 @@
 				<div class="card">
 					<div class="card-header">Ajax Todo List <a id="addNew" data-toggle="modal" data-target="#exampleModal" href="" class="i fa fa-plus float-right"></a></div>
 					<div class="card-body">
+						<input type="text" placeholder="Search" class="form-control" name="searchItem" id="searchItem">
+						<br>
 						<ul class="list-group" id="items">
 							@foreach($items as $item)
 								<li class="list-group-item ourItem" data-toggle="modal" data-target="#exampleModal">{{ $item->item }} <input type="hidden" value="{{ $item->id }}" id="itemId"></li>
@@ -32,6 +35,7 @@
 					</div>
 				</div>
 			</div>
+
 
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
@@ -45,7 +49,6 @@
 						<div class="modal-body">
 							<input type="hidden" id="id">
 							<input type="text" class="form-control" name="" id="addItem" placeholder="Write item here">
-							{{ csrf_field() }}
 						</div>
 						<div class="modal-footer">
 							<button style="display: none;" type="button" id="delete" class="btn btn-danger" data-dismiss="modal">Delete</button>
@@ -60,7 +63,7 @@
 		</div>
 	</div>
 
-	
+	{{ csrf_field() }}
 
 	
 	{{-- Javascript file --}}
@@ -68,6 +71,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script>
 		jQuery(document).ready(function($) {
 			$(document).on('click', '.ourItem', function(event) {
@@ -121,6 +125,10 @@
 						console.log(data);
 					});
 				};
+			});
+
+			$( "#searchItem" ).autocomplete({
+				source: 'http://localhost:8000/search'
 			});
 
 
